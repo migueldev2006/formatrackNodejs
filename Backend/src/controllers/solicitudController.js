@@ -2,9 +2,9 @@ import { pool } from "../database/db.js";
 
 export const registrarSolicitudes = async(req, res) => {
     try {
-        const {Descripcion, fecha, fk_elemento, fk_usuario} = req.body;
+        const {Descripcion, fecha, cantidad, fk_elemento, fk_usuario} = req.body;
         const sql = `INSERT INTO solicitudes (descripcion, fecha, fk_elemento, fk_usuario) VALUES ($1, $2, $3)`;
-        const result = await pool.query(sql, [Descripcion, fecha, fk_elemento, fk_usuario]);
+        const result = await pool.query(sql, [Descripcion, fecha, cantidad, fk_elemento, fk_usuario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Solicitud registrada exitosamente"})
         } else {
@@ -18,9 +18,9 @@ export const registrarSolicitudes = async(req, res) => {
 export const actualizarSolicitudes = async(req, res) => {
     try {
         const {id_solicitud} = req.params
-        const {Descripcion, fk_elemento, fk_usuario} = req.body;
+        const {Descripcion, fecha, cantidad, fk_elemento, fk_usuario} = req.body;
         const sql = `UPDATE verificaciones SET descripcion = $1, fecha = $2, fk_elemento = $3, fk_usuario = $4 WHERE id_solicitud = $5 `;
-        const result = await pool.query(sql, [Descripcion, fk_elemento, fk_usuario, id_solicitud]);
+        const result = await pool.query(sql, [Descripcion, fecha, cantidad, fk_elemento, fk_usuario, id_solicitud]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Solicitud actualizada exitosamente"})
         } else {
