@@ -2,9 +2,9 @@ import {pool} from "../database/db.js";
 
 export const registrarElementos = async(req, res) => {
     try {
-        const {Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Cantidad, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria} = req.body;
-        const sql = 'INSERT INTO elementos(codigo_SENA, codigo_UNPSC, nombre, descripcion, cantidad, estado, actividad, fk_unidad_medidad, fk_movimiento, fk_categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
-        const result = await pool.query(sql, [Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Cantidad, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria]);
+        const {Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Stock, Estado, Actividad, fk_unidad_medida, fk_movimiento, fk_categoria} = req.body;
+        const sql = 'INSERT INTO elementos(codigo_SENA, codigo_UNPSC, nombre, descripcion, stock, estado, actividad, fk_unidad_medidad, fk_movimiento, fk_categoria) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)';
+        const result = await pool.query(sql, [Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Stock, Estado, Actividad, fk_unidad_medida, fk_movimiento, fk_categoria]);
         if(result.rowCount>0){
             return res.status(201).json({message:"El usuario se ha registrado correctamente"});
         }else{
@@ -20,9 +20,9 @@ export const registrarElementos = async(req, res) => {
 export const actualizarElementos = async(req, res) => {
     try {
         const {id_elemento} = req.params
-        const {Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Cantidad, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria} = req.body;
-        const sql = "UPDATE elementos SET codigo_SENA = $1, codigo_UNPSC = $2, nombre = $3, descripcion = 4, cantidad = $5, estado = $6, actividad = $7 fk_unidad_medidad = $8, fk_movimiento = $9, fk_categoria = $10 WHERE id_elemento = $11";
-        const result = await pool.query(sql, [Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Cantidad, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria, id_elemento]);
+        const {Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Stock, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria} = req.body;
+        const sql = "UPDATE elementos SET codigo_SENA = $1, codigo_UNPSC = $2, nombre = $3, descripcion = 4, stock = $5, estado = $6, actividad = $7 fk_unidad_medidad = $8, fk_movimiento = $9, fk_categoria = $10 WHERE id_elemento = $11";
+        const result = await pool.query(sql, [Codigo_SENA, Codigo_UNPSC, Nombre, Descripcion, Stock, Estado, Actividad, fk_unidad_medidad, fk_movimiento, fk_categoria, id_elemento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se actualizo el elemento correctamente"});
         }else{
