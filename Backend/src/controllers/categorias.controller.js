@@ -20,9 +20,9 @@ const registrar = async(req,res) =>{
 const actualizar = async(req,res) =>{
     try{
         const {id} = req.params
-        const {nombre,estado,fechaCreacion,fechaActualizacion} = req.body //agregar el estado
+        const {nombre,estado,fecha_creacion,fecha_actualizacion} = req.body //agregar el estado
         const sql = `UPDATE categorias SET nombre = $1,estado = $2, fecha_creacion = $3, fecha_actualizacion = $4 WHERE id_categoria = $5`
-        const result = await pool.query(sql,[nombre,estado,fechaCreacion,fechaActualizacion,id])
+        const result = await pool.query(sql,[nombre,estado,fecha_creacion,fecha_actualizacion,id])
         return res.status(200).json({msg:"Actualizado con exito"})
     }catch(error){
         console.log(error)
