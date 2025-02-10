@@ -49,7 +49,7 @@ export const actualizarInventarios = async(req, res) => {
 export const desactivarInventario = async(req, res) => {
     try {
         const {id_inventario} = req.params;
-        const sql = `UPDATE inventarios SET estado = 'Inactivo' WHERE id_inventario = $1 and estado = 'Activo'`;
+        const sql = `UPDATE inventarios SET estado = 'Inactivo' WHERE id_inventario = $1 and estado = 'Activo' RETURNING id_inventario`;
         const result = await pool.query(sql, [id_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"elemento del inventario desctivado exitosamente"});

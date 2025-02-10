@@ -34,7 +34,11 @@ export const actualizarTipoMovimiento = async(req, res) => {
 export const desactivarTipoMovimiento = async(req, res) => {
     try {
         const {id_tipo} = req.params;
-        const sql = `UPDATE tipo_movimientos SET estado = false WHERE id_tipo = $1 and estado = true`;
+        const sql = `UPDATE tipo_movimientos SET estado =    
+        CASE 
+        WHEN estado = true THEN false
+        WHEN estado = false THEN true
+        END WHERE id_tipo = $1 `;
         const result = await pool.query(sql, [id_tipo]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Tipo de movimiento desctivado exitosamente"});

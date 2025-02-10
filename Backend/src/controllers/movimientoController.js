@@ -34,7 +34,7 @@ export const actualizarMovimientos = async(req, res) => {
 export const aceptarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos SET estado = 'Aceptado' WHERE id_movimiento = $1 and estado = 'Pendiente'`;
+        const sql = `UPDATE movimientos SET estado = 'Aceptado' WHERE id_movimiento = $1 and estado = 'Pendiente' RETURNING id_movimiento`;
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Su movimiento ha sido aceptado"})
@@ -49,7 +49,7 @@ export const aceptarMovimientos = async(req, res) => {
 export const cancelarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos SET estado = 'Rechazado' WHERE id_movimiento = $1 and estado = 'Pendiente'`;
+        const sql = `UPDATE movimientos SET estado = 'Rechazado' WHERE id_movimiento = $1 and estado = 'Pendiente' RETURNING id_movimiento`;
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha rechazado el movimiento correctamente"})

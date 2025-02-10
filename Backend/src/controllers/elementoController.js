@@ -37,7 +37,7 @@ export const actualizarElementos = async(req, res) => {
 export const desactivarElementos = async(req, res) =>{
     try {
         const {id_elemento} = req.params;
-        const sql = `UPDATE elementos SET actividad = 'Inactivo' WHERE id_elemento = $1 and actividad = 'Activo'`;
+        const sql = `UPDATE elementos SET actividad = 'Inactivo' WHERE id_elemento = $1 and actividad = 'Activo' RETURNING id_elemento`;
         const result = await pool.query(sql, [id_elemento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"El elemento ha sido desactivado exitosamente"})

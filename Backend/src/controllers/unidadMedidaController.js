@@ -34,7 +34,11 @@ export const actualizarUnidadMedida = async(req, res) => {
 export const desactivarUnidadMedida = async(req, res) => {
     try {
         const {id_unidad} = req.params;
-        const sql = `UPDATE unidades_medida SET estado = false WHERE id_unidad = $1 and estado = true`;
+        const sql = `UPDATE unidades_medida SET estado =         
+        CASE 
+        WHEN estado = true THEN false
+        WHEN estado = false THEN true
+        END WHERE id_unidad = $1`;
         const result = await pool.query(sql, [id_unidad]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha desactivado la unidad correctamente"})
@@ -46,6 +50,7 @@ export const desactivarUnidadMedida = async(req, res) => {
         return res.status(500).json({message:"Error al consultar en el sistema"})
     }
 }
+
 export const buscarUnidadMedida = async(req, res) => {
     try {
         const {Nombre, Estado} = req.body

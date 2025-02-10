@@ -34,7 +34,7 @@ export const actualizarPeticiones = async(req, res) => {
 export const rechazarPeticiones = async(req, res) => {
     try {
         const {id_peticion} = req.params;
-        const sql = `UPDATE peticiones SET estado = 'Rechazado' WHERE id_peticion = $1 and estado = 'Pendiente'`;
+        const sql = `UPDATE peticiones SET estado = 'Rechazado' WHERE id_peticion = $1 and estado = 'Pendiente' RETURNING id_peticion`;
         const result = await pool.query(sql, [id_peticion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"La peticion ha sido rechazada"})
@@ -49,7 +49,7 @@ export const rechazarPeticiones = async(req, res) => {
 export const aceptarPeticiones = async(req, res) => {
     try {
         const {id_peticion} = req.params;
-        const sql = `UPDATE peticiones SET estado = 'Aceptado' WHERE id_peticion = $1 and estado = 'Pendiente'`;
+        const sql = `UPDATE peticiones SET estado = 'Aceptado' WHERE id_peticion = $1 and estado = 'Pendiente' RETURNING id_peticion`;
         const result = await pool.query(sql, [id_peticion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"La peticion ha sido aceptada"})
