@@ -35,7 +35,7 @@ export const actualizarSolicitudes = async(req, res) => {
 export const rechazarSolicitudes = async(req, res) => {
     try {
         const {id_solicitud} = req.params;
-        const sql = `UPDATE solicitudes SET estado = 'Cancelada' WHERE id_solicitud = $1 and estado = 'En Proceso'`;
+        const sql = `UPDATE solicitudes SET estado = 'Cancelada' WHERE id_solicitud = $1 and estado = 'En Proceso' RETURNING id_solicitud`;
         const result = await pool.query(sql, [id_solicitud]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"La solicitud ha sido rechazada"})
@@ -51,7 +51,7 @@ export const rechazarSolicitudes = async(req, res) => {
 export const aceptarSolicitudes = async(req, res) => {
     try {
         const {id_solicitud} = req.params;
-        const sql = `UPDATE solicitudes SET estado = 'Aceptada' WHERE id_solicitud = $1 and estado = 'En Proceso'`;
+        const sql = `UPDATE solicitudes SET estado = 'Aceptada' WHERE id_solicitud = $1 and estado = 'En Proceso' RETURNING id_solicitud`;
         const result = await pool.query(sql, [id_solicitud]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"La solicitud ha sido aceptada"})
