@@ -6,7 +6,8 @@ const storage = multer.diskStorage({
       cb(null, "public/img");
     },
     filename: function (req, img, cb) {
-      cb(null, img.originalname);
+        const imagen_elemento = Date.now() + "-" + img.originalname;
+      cb(null, imagen_elemento);
     },
   });
   
@@ -16,10 +17,10 @@ const storage = multer.diskStorage({
 
 export const registrarInventarios = async(req, res) => {
     try {
-        const {Valor, Costo, Descripcion, Stock, Estado, Fecha_Creacion, Fecha_Actualizacion, fk_sitio, fk_elemento} = req.body;
-        let Imagen_Elemento = req.file.originalname;
-        const sql = `INSERT INTO tipo_movimientos (valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, imagen_elemento, fk_sitio, fk_elemento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
-        const result = await pool.query(sql, [Valor, Costo, Descripcion, Stock, Estado, Fecha_Creacion, Fecha_Actualizacion, Imagen_Elemento, fk_sitio, fk_elemento]);
+        const {valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, fk_sitio, fk_elemento} = req.body;
+        const imagen_elemento = req.file.filename;;
+        const sql = `INSERT INTO inventarios (valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, imagen_elemento, fk_sitio, fk_elemento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
+        const result = await pool.query(sql, [valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, imagen_elemento, fk_sitio, fk_elemento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Tipo de movimeiento registrado con exito"});
         } else {
@@ -30,12 +31,20 @@ export const registrarInventarios = async(req, res) => {
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }
 }
+
 export const actualizarInventarios = async(req, res) => {
     try {
         const {id_inventario} = req.params;
-        const {Valor, Costo, Descripcion, Stock, Estado, Fecha_Creacion, Fecha_Actualizacion, fk_sitio, fk_elemento} = req.body;
-        const sql = `UPDATE tipo_movimientos SET valor = $1, costo = $2, descripcion = $3, stock = $4, estado = $5, fecha_creacion = $6, fecha_actualizacion = $7, fk_sitio = $8, fk_elemento = $9 WHERE id_inventario = $10`;
-        const result = await pool.query(sql, [Valor, Costo, Descripcion, Stock, Estado, Fecha_Creacion, Fecha_Actualizacion, fk_sitio, fk_elemento, id_inventario]);
+        const {valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, fk_sitio, fk_elemento} = req.body;
+        const sqlSelect = `SELECT imagen_elemento FROM inventarios WHERE id_inventario = $1`;
+        const resultSelect = await pool.query(sqlSelect, [id_inventario]);
+        const imagenActual = resultSelect.rows[0].imagen_elemento;
+        let nuevaImagen = imagenActual;
+        if (req.file) {
+            nuevaImagen = req.file.filename;
+        }
+        const sql = `UPDATE inventarios SET valor = $1, costo = $2, descripcion = $3, stock = $4, estado = $5, fecha_creacion = $6, fecha_actualizacion = $7, imagen_elemento = $8, fk_sitio = $9, fk_elemento = $10 WHERE id_inventario = $11`;
+        const result = await pool.query(sql, [valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, nuevaImagen, fk_sitio, fk_elemento, id_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Tipo de movimiento actualizado"});
         } else {
@@ -46,10 +55,17 @@ export const actualizarInventarios = async(req, res) => {
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }
 }
+
 export const desactivarInventario = async(req, res) => {
     try {
         const {id_inventario} = req.params;
-        const sql = `UPDATE inventarios SET estado = 'Inactivo' WHERE id_inventario = $1 and estado = 'Activo' RETURNING id_inventario`;
+        const sql = `UPDATE inventarios 
+            SET estado = 
+                CASE 
+                    WHEN estado = 'Activo' THEN 'Inactivo'::estado_inventario
+                    WHEN estado = 'Inactivo' THEN 'Activo'::estado_inventario
+                END
+            WHERE id_inventario = $1`
         const result = await pool.query(sql, [id_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"elemento del inventario desctivado exitosamente"});
@@ -61,16 +77,19 @@ export const desactivarInventario = async(req, res) => {
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }
 }
+
 export const buscarInventarios = async(req, res) => {
     try {
-        const sql = `SELECT * FROM inventarios WHERE stock = $1 || estado = $2`;
-        const result = await pool.query(sql);
-        return res.status(201).json({inventario:result})
+        const {estado} = req.params
+        const sql = `SELECT * FROM inventarios WHERE estado = $1`;
+        const result = await pool.query(sql, [estado]);
+        return res.status(200).json(result.rows)
     } catch (error) {
-        console.log("Eror al consultar en el sistema "+error.message);
+        console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }
 }
+
 export const listarInventarios = async(req, res) => {
     try {
         const sql = `SELECT * FROM inventarios`
