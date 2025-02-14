@@ -2,9 +2,9 @@ import {pool} from '../database/db.js'
 
 export const registrarMovimientos = async(req, res) => {
     try {
-        const {Descripcion, Cantidad, Fecha, Hora_Ingreso, Hora_Salida, Estado, Caracterizacion, fk_Usuario, fk_Tipo_Movimiento, fk_sitio} = req.body;
-        const sql = `INSERT INTO movimientos (descripcion, cantidad, fecha, hora_ingreso, hora_salida, estado, caracterizacion, fk_usuario, fk_tipo_movimiento, fk_sitio) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
-        const result = await pool.query(sql, [Descripcion, Cantidad, Fecha, Hora_Ingreso, Hora_Salida, Estado, Caracterizacion, fk_Usuario, fk_Tipo_Movimiento, fk_sitio]);
+        const {descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento} = req.body;
+        const sql = `INSERT INTO movimientos (descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
+        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha resgistrado el movimiento correctamente"})
         } else {
@@ -18,9 +18,9 @@ export const registrarMovimientos = async(req, res) => {
 export const actualizarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const {Descripcion, Cantidad, Fecha, Hora_Ingreso, Hora_Salida, Estado, Caracterizacion, fk_Usuario, fk_Tipo_Movimiento, fk_Sitio} = req.body;
-        const sql = `UPDATE movimientos SET descripcion = $1, cantidad = $2, fecha = $3, hora_ingreso = $4, hora_salida = $5, estado = $6, caracterizacion = $7, fk_usuario = 8, fk_tipo_movimiento = $9, fk_sitio = $10 WHERE id_movimiento = $11`;
-        const result = await pool.query(sql, [Descripcion, Cantidad, Fecha, Hora_Ingreso, Hora_Salida, Estado, Caracterizacion, fk_Usuario, fk_Tipo_Movimiento, fk_Sitio, id_movimiento]);
+        const {descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento} = req.body;
+        const sql = `UPDATE movimientos SET descripcion = $1, cantidad = $2, hora_ingreso = $3, hora_salida = $4, estado = $5, caracterizacion = $6, fecha_movimiento = $7, fecha_actualizacion = $8, fk_usuario = $9, fk_tipo_movimiento = $10, fk_sitio = $11, fk_elemento = $12 WHERE id_movimiento = $13`;
+        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento, id_movimiento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Movimiento actualizado"})
         } else {
@@ -34,7 +34,12 @@ export const actualizarMovimientos = async(req, res) => {
 export const aceptarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos SET estado = 'Aceptado' WHERE id_movimiento = $1 and estado = 'Pendiente' RETURNING id_movimiento`;
+        const sql = `UPDATE movimientos 
+            SET estado = 
+                CASE 
+                    WHEN estado = 'Pendiente' THEN 'Aprobado'::estado_movimiento
+                END
+            WHERE id_movimiento = $1`;
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Su movimiento ha sido aceptado"})
@@ -49,7 +54,12 @@ export const aceptarMovimientos = async(req, res) => {
 export const cancelarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos SET estado = 'Rechazado' WHERE id_movimiento = $1 and estado = 'Pendiente' RETURNING id_movimiento`;
+        const sql = `UPDATE movimientos 
+        SET estado = 
+            CASE 
+                WHEN estado = 'Pendiente' THEN 'Rechazado'::estado_movimiento
+            END
+        WHERE id_movimiento = $1`;
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha rechazado el movimiento correctamente"})
@@ -63,10 +73,10 @@ export const cancelarMovimientos = async(req, res) => {
 }
 export const buscarMovimientos = async(req, res) => {
     try {
-        const {Fecha, Estado, Caracterizacion} = req.body;
-        const sql = `SELECT * FROM movimientos WHERE fecha = $1 || estado = $2 || caracterizacion = $3`;
-        const result = await pool.query(sql, [Fecha, Estado, Caracterizacion]);
-        return res.status(201).json({Movimiento:result});
+        const {estado} = req.params;
+        const sql = `SELECT * FROM movimientos WHERE estado = $1`;
+        const result = await pool.query(sql, [estado]);
+        return res.status(201).json(result.rows);
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"});

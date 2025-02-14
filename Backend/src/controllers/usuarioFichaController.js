@@ -2,9 +2,9 @@ import {pool} from "../database/db.js";
 
 export const registrarUsuarioFicha = async(req, res) => {
     try {
-        const {fk_usuario, fk_ficha} = req.body;
-        const sql = `INSERT INTO usuario_ficha (fk_usuario, fk_ficha) values ($1, $2)`;
-        const result = await pool.query(sql, [fk_usuario, fk_ficha]);
+        const {fecha_creacion, fecha_actualizacion, fk_usuario, fk_ficha} = req.body;
+        const sql = `INSERT INTO usuario_ficha ( fecha_creacion, fecha_actualizacion, fk_usuario, fk_ficha) values ($1, $2, $3, $4)`;
+        const result = await pool.query(sql, [fecha_creacion, fecha_actualizacion, fk_usuario, fk_ficha]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se le ha asignado una ficha al usuario"});
         } else {
@@ -19,9 +19,9 @@ export const registrarUsuarioFicha = async(req, res) => {
 export const actualizarUsuarioFicha = async(req, res) => {
     try {
         const {id_usuario_ficha} = req.params;
-        const {fk_usuario, fk_ficha} = req.body;
-        const sql = `UPDATE usuario_ficha SET fk_usuario = $1, fk_ficha = $2 WHERE id_usuario_ficha = $3 `;
-        const result = await pool.query(sql, [fk_usuario, fk_ficha, id_usuario_ficha]);
+        const {fecha_creacion, fecha_actualizacion, fk_usuario, fk_ficha} = req.body;
+        const sql = `UPDATE usuario_ficha SET fecha_creacion = $1, fecha_actualizacion = $2, fk_usuario = $3, fk_ficha = $4 WHERE id_usuario_ficha = $5 `;
+        const result = await pool.query(sql, [fecha_creacion, fecha_actualizacion, fk_usuario, fk_ficha, id_usuario_ficha]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha actualizado correctamente"});
         } else {

@@ -2,9 +2,9 @@ import {pool}  from '../database/db.js';
 
 export const resgistrarUnidadMedida = async(req, res) => {
     try {
-        const {Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion} = req.body;
+        const {nombre, estado, fecha_creacion, fecha_actualizacion} = req.body;
         const sql = `INSERT INTO unidades_medida (nombre, estado, fecha_creacion, fecha_actualizacion) VALUES ($1, $2, $3, $4)`;
-        const result = await pool.query(sql, [Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion]);
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha registrado la unidad correctamente"})
         } else {
@@ -18,9 +18,9 @@ export const resgistrarUnidadMedida = async(req, res) => {
 export const actualizarUnidadMedida = async(req, res) => {
     try {
         const {id_unidad} = req.params;
-        const {Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion} = req.body;
-        const sql = `UPDATE unidades_medida SET nombre = $1, estado = $2, fecha_creacion = $3, fecha_actualizacion = $4 WHERE id_unidad = 5`;
-        const result = await pool.query(sql, [Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion, id_unidad]);
+        const {nombre, estado, fecha_creacion, fecha_actualizacion} = req.body;
+        const sql = `UPDATE unidades_medida SET nombre = $1, estado = $2, fecha_creacion = $3, fecha_actualizacion = $4 WHERE id_unidad = $5`;
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion, id_unidad]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha actualizado la unidad correctamente"})
         } else {
@@ -53,10 +53,10 @@ export const desactivarUnidadMedida = async(req, res) => {
 
 export const buscarUnidadMedida = async(req, res) => {
     try {
-        const {Nombre, Estado} = req.body
-        const sql = `SELECT * FROM unidades_medida WHERE nombre = $1 || estado = $2`;
-        const result = await pool.query(sql,[Nombre, Estado]);
-        return res.status(201).json({unidad:result})
+        const {nombre} = req.params
+        const sql = `SELECT * FROM unidades_medida WHERE nombre = $1`;
+        const result = await pool.query(sql,[nombre]);
+        return res.status(201).json(result.rows)
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"})

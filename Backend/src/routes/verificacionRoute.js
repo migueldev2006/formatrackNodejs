@@ -4,7 +4,6 @@ import { registrarVerificacion, buscarVerificacion, listarVerificaciones, actual
 export const verificacionRoute = Router();
 
 verificacionRoute.post('/api/verificacion/register/', registrarVerificacion);
-verificacionRoute.put('/api/verificacion/update/:id_verificacion/', actualizarVerificacion);
-verificacionRoute.get('/api/verificacion/:persona_asignada/', buscarVerificacion);
-verificacionRoute.get('/api/verificacion/:fecha/', buscarVerificacion);
+verificacionRoute.put('/api/verificacion/update/:id_verificacion', actualizarVerificacion);
+verificacionRoute.get('/api/verificacion/:fecha_verificacion', buscarVerificacion);
 verificacionRoute.get('/api/verificacion/', listarVerificaciones);

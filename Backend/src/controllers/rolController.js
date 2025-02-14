@@ -2,9 +2,9 @@ import {pool} from "../database/db.js";
 
 export const registrarRol = async(req, res) => {
     try {
-        const {Nombre, EStado, fk_usuario} = req.body;
-        const sql = `INSERT INTO roles (Nombre, EStado, fk_usuario) values ($1, $2, $3)`;
-        const result = await pool.query(sql, [Nombre, EStado, fk_usuario]);
+        const {nombre, estado, fecha_creacion, fecha_actualizacion, fk_usuario} = req.body;
+        const sql = `INSERT INTO roles (nombre, estado, fecha_creacion, fecha_actualizacion, fk_usuario) values ($1, $2, $3, $4, $5)`;
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion, fk_usuario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Rol registrado exitosamente"});
         } else {
@@ -19,9 +19,9 @@ export const registrarRol = async(req, res) => {
 export const actualizarRol = async(req, res) => {
     try {
         const {id_rol} = req.params;
-        const {Nombre, EStado, fk_usuario} = req.body;
-        const sql = `UPDATE roles SET Nombre = $1, EStado = $2, fk_usuario = $3 WHERE id_rol = $4 `;
-        const result = await pool.query(sql, [Nombre, EStado, fk_usuario, id_rol]);
+        const {nombre, estado, fecha_creacion, fecha_actualizacion, fk_usuario} = req.body;
+        const sql = `UPDATE roles SET nombre = $1, estado = $2, fecha_creacion = $3, fecha_actualizacion = $4, fk_usuario = $5 WHERE id_rol = $6 `;
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion, fk_usuario, id_rol]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"El rol se ha actualizado correctamente"});
         } else {
@@ -35,13 +35,13 @@ export const actualizarRol = async(req, res) => {
 
 export const desactivarRol = async(req, res) => {
     try {
-        const {id_unidad} = req.params;
+        const {id_rol} = req.params;
         const sql = `UPDATE roles SET estado =         
         CASE 
         WHEN estado = true THEN false
         WHEN estado = false THEN true
-        END WHERE id_unidad = $1`;
-        const result = await pool.query(sql, [id_unidad]);
+        END WHERE id_rol = $1`;
+        const result = await pool.query(sql, [id_rol]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"el rol se ha desactivado correctamente"})
         } else {
@@ -55,10 +55,10 @@ export const desactivarRol = async(req, res) => {
 
 export const buscarRol = async(req, res) => {
     try {
-        const {Persona_Asignada, Fecha} = req.body;
-        const sql = `SELECT * FROM roles WHERE nombre = $1`;
-        const result = await pool.query(sql, [Persona_Asignada, Fecha]);
-        return res.status(201).json({rol:result})
+        const {nombre} = req.params;
+        const sql = "SELECT * FROM roles WHERE nombre = $1";
+        const result = await pool.query(sql, [nombre]);
+        return res.status(200).json(result.rows)
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"})

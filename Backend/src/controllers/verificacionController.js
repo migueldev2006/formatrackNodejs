@@ -2,9 +2,9 @@ import {pool} from "../database/db.js";
 
 export const registrarVerificacion = async(req, res) => {
     try {
-        const {Persona_Encargada, Persona_Asignada, Fecha, Hora_Ingreso, Hora_Fin, fk_inventario} = req.body;
-        const sql = `INSERT INTO verificaciones (persona_encargada, perona_asignada, fecha, hora_ingreso, hora_fin) values ($1, $2, $3, $4, $5)`;
-        const result = await pool.query(sql, [Persona_Encargada, Persona_Asignada, Fecha, Hora_Ingreso, Hora_Fin, fk_inventario]);
+        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario} = req.body;
+        const sql = `INSERT INTO verificaciones (persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario) values ($1, $2, $3, $4, $5, $6, $7)`;
+        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Registro exitoso, Iniciando Verificacion"});
         } else {
@@ -19,9 +19,9 @@ export const registrarVerificacion = async(req, res) => {
 export const actualizarVerificacion = async(req, res) => {
     try {
         const {id_verificacion} = req.params;
-        const {Persona_Encargada, Persona_Asignada, Fecha, Hora_Ingreso, Hora_Fin, fk_inventario} = req.body;
-        const sql = `UPDATE verificaciones SET persona_encargada = $1, persona_asignada = $2, fecha = $3, hora_ingreso = $4, hora_fin = $5, fk_inventaro = $6 WHERE id_verificacion = $7 `;
-        const result = await pool.query(sql, [Persona_Encargada, Persona_Asignada, Fecha, Hora_Ingreso, Hora_Fin, fk_inventario, id_verificacion]);
+        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario} = req.body;
+        const sql = `UPDATE verificaciones SET persona_encargada = $1, persona_asignada = $2, hora_ingreso = $3, hora_fin = $4, fecha_verificacion = $5, fecha_actualizacion = $6, fk_inventario = $7 WHERE id_verificacion = $8 `;
+        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario, id_verificacion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha actualizado correctamente"});
         } else {
@@ -35,10 +35,10 @@ export const actualizarVerificacion = async(req, res) => {
 
 export const buscarVerificacion = async(req, res) => {
     try {
-        const {Persona_Asignada, Fecha} = req.body;
-        const sql = `SELECT * FROM verificaciones WHERE persona_asignada = $1 || fecha = $2`;
-        const result = await pool.query(sql, [Persona_Asignada, Fecha]);
-        return res.status(201).json({verificacion:result})
+        const {fecha_verificacion} = req.params;
+        const sql = `SELECT * FROM verificaciones WHERE fecha_verificacion = $1`;
+        const result = await pool.query(sql, [fecha_verificacion]);
+        return res.status(201).json(result.rows)
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"})

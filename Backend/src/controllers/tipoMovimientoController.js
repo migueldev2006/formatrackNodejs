@@ -2,9 +2,9 @@ import { pool } from "../database/db.js";
 
 export const registrarTipoMovimiento = async(req, res) => {
     try {
-        const {Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion} = req.body;
-        const sql = `INSERT INTO tipo_movimientos (nombre, fecha_creacion, fecha_actualizacion) VALUES ($1, $2, $3)`;
-        const result = await pool.query(sql, [Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion]);
+        const {nombre, estado, fecha_creacion, fecha_actualizacion} = req.body;
+        const sql = `INSERT INTO tipo_movimientos (nombre, estado, fecha_creacion, fecha_actualizacion) VALUES ($1, $2, $3, $4)`;
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Tipo de movimeiento registrado con exito"});
         } else {
@@ -18,9 +18,9 @@ export const registrarTipoMovimiento = async(req, res) => {
 export const actualizarTipoMovimiento = async(req, res) => {
     try {
         const {id_tipo} = req.params;
-        const {Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion} = req.body;
+        const {nombre, estado, fecha_creacion, fecha_actualizacion} = req.body;
         const sql = `UPDATE tipo_movimientos SET nombre = $1, estado = $2, fecha_creacion = $3, fecha_actualizacion = $4 WHERE id_tipo = $5`;
-        const result = await pool.query(sql, [Nombre, Estado, Fecha_Creacion, Fecha_Actualizacion, id_tipo]);
+        const result = await pool.query(sql, [nombre, estado, fecha_creacion, fecha_actualizacion, id_tipo]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Tipo de movimiento actualizado"});
         } else {
@@ -52,9 +52,10 @@ export const desactivarTipoMovimiento = async(req, res) => {
 }
 export const buscarTipoMovimiento = async(req, res) => {
     try {
-        const sql = `SELECT * FROM tipo_movimientos WHERE fecha = $1 || estado = $2`;
-        const result = await pool.query(sql);
-        return res.status(201).json({tipoMovimiento:result})
+        const {estado} = req.params;
+        const sql = `SELECT * FROM tipo_movimientos WHERE estado = $1`;
+        const result = await pool.query(sql, [estado]);
+        return res.status(201).json(result.rows)
     } catch (error) {
         console.log("Eror al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"});
@@ -62,7 +63,7 @@ export const buscarTipoMovimiento = async(req, res) => {
 }
 export const listarTipoMovimiento = async(req, res) => {
     try {
-        const sql = `SELECT * FROM peticiones`
+        const sql = `SELECT * FROM tipo_movimientos`
         const result = await pool.query(sql);
         if (result.rowCount === 0) {
             return res.status(200).json([])
