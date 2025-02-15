@@ -32,7 +32,7 @@ const actualizar = async(req,res) =>{
 
 //Desactivar Centro
 
-const cambiaEstado = async(req,res) =>{ //Probar bien 
+const cambiaEstado = async(req,res) =>{ 
     try{
         const { id } = req.params
         const sql = `UPDATE centros SET estado =
