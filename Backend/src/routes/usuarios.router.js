@@ -5,7 +5,7 @@ const router = Router()
 
 
 router.get('/usuarios',listar);
-router.get('/usuarios/buscar/:documento',verifyToken(),buscarUsuario);
+router.get('/usuarios/buscar/:documento',buscarUsuario);
 router.post('/usuarios/login',login);
 router.post('/usuarios/cerrar',logout);
 router.post('/usuarios',registrar);

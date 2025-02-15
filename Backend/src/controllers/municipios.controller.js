@@ -31,7 +31,7 @@ const actualizar = async(req,res) =>{
 
 //Desactivar municipio
 
-const cambiaEstado = async (req, res) => { //falta probar
+const cambiaEstado = async (req, res) => { 
     try {
         const { id } = req.params
         const sql = `UPDATE municipios SET estado =

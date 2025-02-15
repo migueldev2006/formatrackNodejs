@@ -5,9 +5,9 @@ import {pool} from '../database/db.js'
 
 const registrar = async(req,res) =>{
     try{
-        const {nombre,estado, fecha_creacion,fecha_actualizacion,fk_area} = req.body
-        const sql = "INSERT INTO tipo_sitios(nombre,estado,fecha_creacion,fecha_actualizacion,fk_area) VALUES($1,$2,$3,$4,$5)"
-        const result = await pool.query(sql,[nombre,estado,fecha_creacion,fecha_actualizacion,fk_area])
+        const {nombre,estado, fecha_creacion,fecha_actualizacion} = req.body
+        const sql = "INSERT INTO tipo_sitios(nombre,estado,fecha_creacion,fecha_actualizacion) VALUES($1,$2,$3,$4)"
+        const result = await pool.query(sql,[nombre,estado,fecha_creacion,fecha_actualizacion])
         return res.status(200).json({msg:"Tipo de sitio registrado exitosamente"})
     }catch(error){
         console.log(error)
@@ -20,9 +20,9 @@ const registrar = async(req,res) =>{
 const actualizar = async(req,res) => {
     try{
         const {id} = req.params
-        const {nombre,estado, fecha_creacion,fecha_actualizacion,fk_area} = req.body
-        const sql = `UPDATE tipo_sitios SET nombre = $1,estado = $2, fecha_creacion = $3,fecha_actualizacion = $4, fk_area = $5 WHERE id_tipo = $6 `
-        const result = await pool.query(sql,[nombre,estado,fecha_creacion,fecha_actualizacion,fk_area,id])
+        const {nombre,estado, fecha_creacion,fecha_actualizacion} = req.body
+        const sql = `UPDATE tipo_sitios SET nombre = $1,estado = $2, fecha_creacion = $3,fecha_actualizacion = $4 WHERE id_tipo = $5 `
+        const result = await pool.query(sql,[nombre,estado,fecha_creacion,fecha_actualizacion,id])
         return res.status(200).json({msg:"Actualizado con exito"})
     }catch(error){
         console.log(error)
@@ -32,7 +32,7 @@ const actualizar = async(req,res) => {
 
 //Desactivar Tipo de Sitio
 
-const cambiaEstado = async(req,res) =>{ //ver bien como es 
+const cambiaEstado = async(req,res) =>{  
     try{
         const { id } = req.params
         const sql = `UPDATE tipo_sitios SET estado =
