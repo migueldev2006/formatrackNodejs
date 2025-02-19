@@ -6,7 +6,12 @@ const RegistrarArea = async (req, res) => {
     const sql =
       "insert into areas (nombre,persona_encargada,estado,fecha_creacion,fecha_actualizacion,fk_sede) Values ($1,$2,$3,$4,$5,$6)";
     const result = await pool.query(sql, [nombre, persona_encargada,estado,fecha_creacion,fecha_actualizacion, fk_sede]);
-    res.status(200).json(result.rows);
+    if (result.rowCount>0) {
+      return res.status(201).json({message:"Se registro el area correctamente"});
+  }else{
+      return res.status(400).json({message:"No se registro el area"});
+}
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al regsitrar area" });
@@ -28,7 +33,12 @@ const ActualizarArea = async (req, res) => {
       fk_sede,
       id_Area,
     ]);
-    res.status(200).json(result.rows);
+    if (result.rowCount>0) {
+      return res.status(201).json({message:"Se actualizar el area correctamente"});
+  }else{
+      return res.status(400).json({message:"No se actualizar el area"});
+}
+
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error en la actualizacion de areas" });
@@ -42,8 +52,10 @@ const Buscar_Área_por_Nombre = async (req, res) => {
     const result = await pool.query(sql, [nombre]);
     if (result.rows.length === 0) {
       return res.status(404).json({ msg: "area no existe"});
+}else{
+  res.status(200).json(result.rows);
 }
-    res.status(200).json(result.rows);
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error en al buscar  areas  por nombre" });
@@ -68,7 +80,12 @@ const Desactivar_Area = async (req,res)=>{
     const {id_Area}=req.params;
     const sql="update areas set estado= CASE WHEN estado= false THEN true ELSE false END where id_area=$1"
     const result= await pool.query(sql,[id_Area])
-    res.status(200).json(result.rows)
+    if (result.rowCount>0) {
+      return res.status(201).json({message:"Se desactivo el area correctamente"});
+  }else{
+      return res.status(400).json({message:"No se desactivo el area"});
+}
+
   } catch (error) {
     console.log(error)
     res.status(500).json({message:"Error al desactivar area"})
