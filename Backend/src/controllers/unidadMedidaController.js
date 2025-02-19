@@ -56,8 +56,11 @@ export const buscarUnidadMedida = async(req, res) => {
         const {nombre} = req.params
         const sql = `SELECT * FROM unidades_medida WHERE nombre = $1`;
         const result = await pool.query(sql,[nombre]);
-        return res.status(201).json(result.rows)
-    } catch (error) {
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay Uniades de Medida registrados con este nombre"});
+        }else{
+            return res.status(200).json(result.rows);
+        }    } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"})
     }

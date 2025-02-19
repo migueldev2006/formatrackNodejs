@@ -55,8 +55,12 @@ export const buscarTipoMovimiento = async(req, res) => {
         const {estado} = req.params;
         const sql = `SELECT * FROM tipo_movimientos WHERE estado = $1`;
         const result = await pool.query(sql, [estado]);
-        return res.status(201).json(result.rows)
-    } catch (error) {
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay tipos de movimientos registrados con este nombre"});
+        }else{
+            return res.status(200).json(result.rows);
+        }
+        } catch (error) {
         console.log("Eror al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }

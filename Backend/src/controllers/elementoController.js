@@ -62,7 +62,12 @@ export const buscarElementos = async(req, res) => {
         const {nombre} = req.params
         const sql = `SELECT * FROM elementos WHERE nombre = $1`;
         const result = await pool.query(sql, [nombre]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay elementos registrados"});
+        }else{
             return res.status(200).json(result.rows);
+        }
+            
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json("Error al consultar en el sistema");

@@ -79,8 +79,11 @@ export const buscarSolicitudes = async(req, res) => {
         const {estado} = req.params;
         const sql = `SELECT * FROM solicitudes WHERE estado = $1`;
         const result = await pool.query(sql, [estado]);
-        return res.status(200).json(result.rows)
-    } catch (error) {
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay solicitudes registrados con este estado"});
+        }else{
+            return res.status(200).json(result.rows);
+        }    } catch (error) {
         console.log("Error al consultar en el sistema");
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }

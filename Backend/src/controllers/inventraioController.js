@@ -22,9 +22,9 @@ export const registrarInventarios = async(req, res) => {
         const sql = `INSERT INTO inventarios (valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, imagen_elemento, fk_sitio, fk_elemento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
         const result = await pool.query(sql, [valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, imagen_elemento, fk_sitio, fk_elemento]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"Tipo de movimeiento registrado con exito"});
+            return res.status(201).json({message:"El elemnto se ha registrado  en el inventario con exito"});
         } else {
-            return res.status(400).json({message:"No fue posible registrar el tipo de movimiento"});
+            return res.status(400).json({message:"No fue posible registrar el elemnto en el inventario"});
         }
     } catch (error) {
         console.log("Eror al consultar en el sistema "+error.message);
@@ -46,7 +46,7 @@ export const actualizarInventarios = async(req, res) => {
         const sql = `UPDATE inventarios SET valor = $1, costo = $2, descripcion = $3, stock = $4, estado = $5, fecha_creacion = $6, fecha_actualizacion = $7, imagen_elemento = $8, fk_sitio = $9, fk_elemento = $10 WHERE id_inventario = $11`;
         const result = await pool.query(sql, [valor, costo, descripcion, stock, estado, fecha_creacion, fecha_actualizacion, nuevaImagen, fk_sitio, fk_elemento, id_inventario]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"Tipo de movimiento actualizado"});
+            return res.status(201).json({message:"El elemento en el inventario ha sido actualizado"});
         } else {
             return res.status(400).json({message:"No se logro realizar la actualizacion"});
         }
@@ -68,9 +68,9 @@ export const desactivarInventario = async(req, res) => {
             WHERE id_inventario = $1`
         const result = await pool.query(sql, [id_inventario]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"elemento del inventario desctivado exitosamente"});
+            return res.status(201).json({message:"Elemento del inventario desctivado exitosamente"});
         } else {
-            return res.status(400).json({message:" No se logro desactivar el elemnto del inventario"});
+            return res.status(400).json({message:" No se logro desactivar el elemento del inventario"});
         }
     } catch (error) {
         console.log("Eror al consultar en el sistema "+error.message);
@@ -83,7 +83,11 @@ export const buscarInventarios = async(req, res) => {
         const {estado} = req.params
         const sql = `SELECT * FROM inventarios WHERE estado = $1`;
         const result = await pool.query(sql, [estado]);
-        return res.status(200).json(result.rows)
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay elementos registrados en el inventario"});
+        }else{
+            return res.status(200).json(result.rows);
+        }
     } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"});

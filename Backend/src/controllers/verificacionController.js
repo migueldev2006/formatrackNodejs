@@ -38,8 +38,11 @@ export const buscarVerificacion = async(req, res) => {
         const {fecha_verificacion} = req.params;
         const sql = `SELECT * FROM verificaciones WHERE fecha_verificacion = $1`;
         const result = await pool.query(sql, [fecha_verificacion]);
-        return res.status(201).json(result.rows)
-    } catch (error) {
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "No hay verificaciones registrados es esta fecha"});
+        }else{
+            return res.status(200).json(result.rows);
+        }    } catch (error) {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:"Error al consultar en el sistema"})
     }
