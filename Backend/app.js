@@ -19,11 +19,21 @@ import usuarioRoute from "./src/routes/usuarios.router.js";
 import { verificacionRoute } from "./src/routes/verificacionRoute.js";
 import { usuarioFichaRoute } from "./src/routes/usuarioFichaRoute.js";
 import { rolRoute } from "./src/routes/rolRoute.js";
+import swaggerUI from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
 
 const app = express()
 
+
+
+const swaggerData = JSON.parse(fs.readFileSync(path.resolve('swagger.json'), 'utf-8'));
+console.log(swaggerData)
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+
+app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerData));
 
 app.use(areaRoute)
 app.use(categoriaRoute)

@@ -4,14 +4,14 @@ import verifyToken from "../middlewares/verifyToken.js";
 const router = Router()
 
 
-router.get('/usuarios',listar);
-router.get('/usuarios/buscar/:documento',buscarUsuario);
+router.get('/usuarios',verifyToken(), listar);
+router.get('/usuarios/buscar/:documento',verifyToken(), buscarUsuario);
 router.post('/usuarios/login',login);
-router.post('/usuarios/cerrar',logout);
-router.post('/usuarios',registrar);
-router.put('/usuarios/:id',actualizar);
-router.put('/usuarios/estado/:id',cambiarEstado);
-router.delete('/usuarios/:id',eliminar);
+router.post('/usuarios/cerrar',verifyToken(), logout);
+router.post('/usuarios',verifyToken(), registrar);
+router.put('/usuarios/:id',verifyToken(), actualizar);
+router.put('/usuarios/estado/:id',verifyToken(), cambiarEstado);
+router.delete('/usuarios/:id',verifyToken(), eliminar);
 
 
 export default router
