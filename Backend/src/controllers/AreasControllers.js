@@ -40,6 +40,9 @@ const Buscar_Área_por_Nombre = async (req, res) => {
     const { nombre } = req.params;
     const sql = "select * from  areas  where nombre=$1";
     const result = await pool.query(sql, [nombre]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ msg: "area no existe"});
+}
     res.status(200).json(result.rows);
   } catch (error) {
     console.log(error);
