@@ -1,4 +1,4 @@
-import {pool} from "../../src/database/db.js";
+import {pool} from "../database/db.js";
 
 
 const Registrar_Sede = async (req,res)=>{

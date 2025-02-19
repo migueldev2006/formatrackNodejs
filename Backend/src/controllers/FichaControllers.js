@@ -1,4 +1,4 @@
-import {pool} from "../../src/database/db.js";
+import {pool} from "../database/db.js";
 
 const Registrar_Ficha = async (req, res) => {
   try {
@@ -62,6 +62,9 @@ const Buscar_Ficha_por_codigo = async (req,res)=>{
         const {codigo_ficha} = req.params;
         const sql= "select * from fichas where codigo_ficha=$1"
         const result = await pool.query(sql,[codigo_ficha]);
+        if (result.rows.length === 0) {
+          return res.status(404).json({ msg: "ficha no existe"});
+    }
         res.status(200).json(result.rows);
     } catch (error) {
         console.log(error)
