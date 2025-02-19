@@ -24,7 +24,11 @@ const Registrar_Sitio = async (req, res) => {
       fk_tipo_sitio,
       fk_area,
     ]);
-    res.status(200).json(result.rows);
+    if (result.rowCount>0) {
+        return res.status(201).json({message:"Se registro el sitio correctamente"});
+    }else{
+        return res.status(400).json({message:"No se registro el sitio"});
+  }
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al registrar sitio" });
@@ -48,7 +52,13 @@ const Actualizar_Sitio = async (req,res)=>{
             estado,
             fecha_creacion,
             fecha_actualizacion,fk_tipo_sitio,fk_area,id_sitio])
-            res.status(200).json(result.rows);
+
+            if (result.rowCount>0) {
+                return res.status(201).json({message:"Se actualizar el sitio correctamente"});
+            }else{
+                return res.status(400).json({message:"No se actualizar el sitio"});
+          }
+     
     } catch (error) {
         console.log(error)
         res.status(500).json({message:"Error al actualziar sitios"})
@@ -62,7 +72,12 @@ const Desactivar_Sitio = async (req,res)=>{
         const {id_sitio}= req.params;
         const sql="update sitios set estado= CASE WHEN estado = false THEN true ELSE false END where id_sitio=$1";
         const result = await pool.query(sql,[id_sitio])
-        res.status(200).json(result.rows);
+        if (result.rowCount>0) {
+            return res.status(201).json({message:"Se desactivo el sitio correctamente"});
+        }else{
+            return res.status(400).json({message:"No se desactivo el sitio"});
+      }
+
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Error al desactivar sitio"})
@@ -77,8 +92,10 @@ const Buscar_Sitio_por_nombre = async (req,res)=>{
         const result = await pool.query(sql,[nombre]);
         if (result.rows.length === 0) {
             return res.status(404).json({ msg: "sitio no existe"});
-      }
+      }else{
         res.status(200).json(result.rows);
+      }
+      
     } catch (error) {
         console.log(error);
         res.status(500).josn({message:"Error al buscar sitio por nombre"})
