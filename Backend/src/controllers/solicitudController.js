@@ -101,4 +101,24 @@ export const listarSolicitudes = async(req, res) => {
         console.log("Error al consultar en el sistema "+error.message);
         return res.status(500).json({message:" Error al consultar en el sistema"});
     }
+
+}
+
+export const actualizarStockSolicitud = async (req, res) => {
+    try {
+        const { id_solicitud } = req.params;
+
+        if (!id_solicitud) {
+            return res.status(400).json({ message: "El id_solicitud es obligatorio." });
+        }
+
+        const sql = `CALL actualizar_stock_solicitud($1)`;
+        await pool.query(sql, [id_solicitud]);
+
+        return res.status(200).json({ message: "Stock actualizado correctamente." });
+
+    } catch (error) {
+        console.error("Error al actualizar stock de la solicitud:", error.message);
+        return res.status(500).json({ message: "Error al actualizar el stock de la solicitud." });
+    }
 }

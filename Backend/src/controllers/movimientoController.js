@@ -99,3 +99,23 @@ export const listarMovimientos = async(req, res) => {
         return res.status(500).json({message:"Error al consultar en el sistema"});
     }
 }
+
+
+export const actualizarStockMovimiento = async (req, res) => {
+    try {
+        const { id_movimiento } = req.params;
+
+        if (!id_movimiento) {
+            return res.status(400).json({ message: "El id_movimiento es obligatorio." });
+        }
+
+        const sql = `CALL actualizar_stock_movimiento($1)`;
+        await pool.query(sql, [id_movimiento]);
+
+        return res.status(200).json({ message: "Stock actualizado correctamente tras movimiento." });
+
+    } catch (error) {
+        console.error("Error al actualizar stock por movimiento:", error.message);
+        return res.status(500).json({ message: "Error al actualizar el stock por movimiento." });
+    }
+};
