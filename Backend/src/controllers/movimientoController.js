@@ -2,84 +2,80 @@ import {pool} from '../database/db.js'
 
 export const registrarMovimientos = async(req, res) => {
     try {
-        const {descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento} = req.body;
-        const sql = `INSERT INTO movimientos (descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
-        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento]);
+        const {descripcion, cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario} = req.body;
+        const sql = `INSERT INTO movimientos (descripcion, cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`;
+        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha resgistrado el movimiento correctamente"})
         } else {
             return res.status(400).json({message:"No se logro registrar el movimiento"})
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"});
+        console.log("Error al registrar el movimiento en el sistema "+error.message);
+        return res.status(500).json({message:"Error al registrar el movimiento en el sistema"});
     }
 }
 export const actualizarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const {descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento} = req.body;
-        const sql = `UPDATE movimientos SET descripcion = $1, cantidad = $2, hora_ingreso = $3, hora_salida = $4, estado = $5, caracterizacion = $6, fecha_movimiento = $7, fecha_actualizacion = $8, fk_usuario = $9, fk_tipo_movimiento = $10, fk_sitio = $11, fk_elemento = $12 WHERE id_movimiento = $13`;
-        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, estado, caracterizacion, fecha_movimiento, fecha_actualizacion, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_elemento, id_movimiento]);
+        const {descripcion, cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario} = req.body;
+        const sql = `UPDATE movimientos SET descripcion = $1, cantidad = $2, hora_ingreso = $3, hora_salida = $4, aceptado = $5, en_proceso = $6, cancelado = $7, devolutivo = $8, no_devolutivo = $9, fk_usuario = $10, fk_tipo_movimiento = $11, fk_sitio = $12, fk_inventario = $13 WHERE id_movimiento = $14`;
+        const result = await pool.query(sql, [descripcion, cantidad, hora_ingreso, hora_salida, aceptado, en_proceso, cancelado, devolutivo, no_devolutivo, fk_usuario, fk_tipo_movimiento, fk_sitio, fk_inventario, id_movimiento]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"Movimiento actualizado"})
+            return res.status(200).json({message:"Movimiento actualizado"})
         } else {
-            return res.status(400).json({message:"Fallo la actualizacion del movimeiento"})
+            return res.status(400).json({message:"Fallo la actualizacion del movimiento"})
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"});
+        console.log("Error al actualizar el movimiento en el sistema "+error.message);
+        return res.status(500).json({message:"Error al actualizar el movimiento en el sistema"});
     }
 }
 export const aceptarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos 
-            SET estado = 
-                CASE 
-                    WHEN estado = 'Pendiente' THEN 'Aprobado'::estado_movimiento
-                END
-            WHERE id_movimiento = $1`;
+        const sql = `UPDATE movimientos SET aceptado = TRUE, en_proceso = FALSE, cancelado = FALSE WHERE id_movimiento = $1 AND en_proceso = TRUE `
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"Su movimiento ha sido aceptado"})
+            return res.status(200).json({message:"Su movimiento ha sido aceptado"})
         } else {
-            return res.status(400).json({message:"No se ha aceptado el movimiento"})
+            return res.status(400).json({message:"No se logro aceptar el movimiento debido a que su movimiento ya ha sido aceptado o posiblemente rechazado"})
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"});
+        console.log("Error al aceptar un movimiento en el sistema "+error.message);
+        return res.status(500).json({message:"Error al aceptar un movimiento en el sistema"});
     }
 }
 export const cancelarMovimientos = async(req, res) => {
     try {
         const {id_movimiento} = req.params;
-        const sql = `UPDATE movimientos 
-        SET estado = 
-            CASE 
-                WHEN estado = 'Pendiente' THEN 'Rechazado'::estado_movimiento
-            END
-        WHERE id_movimiento = $1`;
+        const sql = `UPDATE movimientos SET aceptado = FALSE, en_proceso = FALSE, cancelado = TRUE WHERE id_movimiento = $1 AND en_proceso = TRUE `;
         const result = await pool.query(sql, [id_movimiento]);
         if (result.rowCount>0) {
-            return res.status(201).json({message:"Se ha rechazado el movimiento correctamente"})
+            return res.status(200).json({message:"Se ha rechazado el movimiento correctamente"})
         } else {
-            return res.status(400).json({message:"No se logro rechazar el movimiento"})
+            return res.status(400).json({message:"No se logro rechazar el movimiento debido a que ya ha sido rechazado o posiblemente aceptado"})
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"});
+        console.log("Error al cancelar un movimiento en el sistema "+error.message);
+        return res.status(500).json({message:"Error al cancelar un movimiento en el sistema"});
     }
 }
+//pendiente
 export const buscarMovimientos = async(req, res) => {
     try {
-        const {estado} = req.params;
-        const sql = `SELECT * FROM movimientos WHERE estado = $1`;
-        const result = await pool.query(sql, [estado]);
-        return res.status(201).json(result.rows);
+        const {valor} = req.params
+        const sql = `SELECT * FROM movimientos WHERE descripcion ILIKE $1 OR cantidad::TEXT ILIKE $1 OR hora_ingreso::TEXT ILIKE $1 OR hora_salida::TEXT ILIKE $1 OR aceptado::TEXT ILIKE $1 OR en_proceso::TEXT ILIKE $1 OR cancelado::TEXT ILIKE $1 OR devolutivo::TEXT ILIKE $1 OR no_devolutivo::TEXT ILIKE $1 OR created_at::TEXT ILIKE $1 OR updated_at::TEXT ILIKE $1 OR fk_usuario::TEXT ILIKE $1 OR fk_tipo_movimiento::TEXT ILIKE $1 OR  fk_sitio::TEXT ILIKE $1 OR fk_inventario::TEXT ILIKE $1 OR id_movimiento::TEXT ILIKE $1`;
+        const values = [`%${valor}%`];
+        const result = await pool.query(sql, values);
+        if (result.rowCount>0) {
+            return res.status(200).json(result.rows)
+        } else {
+            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
+        }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"});
+        console.log("Error al buscar en el sistema "+error.message);
+        return res.status(500).json({message:"Error al buscar en el sistema"});
     }
 }
 export const listarMovimientos = async(req, res) => {

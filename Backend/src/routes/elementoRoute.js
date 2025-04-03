@@ -1,10 +1,10 @@
 import {Router} from 'express';
-import { registrarElementos, actualizarElementos, buscarElementos, desactivarElementos, listarElementos } from '../controllers/elementoController.js';
+import { registrarElementos, actualizarElementos, buscarElementos, cambiarEstadoElemento, listarElementos } from '../controllers/elementoController.js';
 
 export const elementoRoute = Router();
 
-elementoRoute.post('/api/elemento/register/', registrarElementos);
-elementoRoute.put('/api/elemento/update/:id_elemento', actualizarElementos);
-elementoRoute.put('/api/elemento/desactivar/:id_elemento', desactivarElementos);
-elementoRoute.get('/api/elemento/:nombre', buscarElementos);
-elementoRoute.get('/api/elemento/', listarElementos);
+elementoRoute.post('/elemento/', registrarElementos);
+elementoRoute.put('/elemento/:id_elemento', actualizarElementos);
+elementoRoute.put('/elemento/cambiarEstado/:id_elemento', cambiarEstadoElemento);
+elementoRoute.get('/elemento/search/:valor', buscarElementos);
+elementoRoute.get('/elemento/', listarElementos);

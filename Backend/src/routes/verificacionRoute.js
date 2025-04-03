@@ -3,7 +3,7 @@ import { registrarVerificacion, buscarVerificacion, listarVerificaciones, actual
 
 export const verificacionRoute = Router();
 
-verificacionRoute.post('/api/verificacion/register/', registrarVerificacion);
-verificacionRoute.put('/api/verificacion/update/:id_verificacion', actualizarVerificacion);
-verificacionRoute.get('/api/verificacion/:fecha_verificacion', buscarVerificacion);
-verificacionRoute.get('/api/verificacion/', listarVerificaciones);
+verificacionRoute.post('/verificacion/register/', registrarVerificacion);
+verificacionRoute.put('/verificacion/update/:id_verificacion', actualizarVerificacion);
+verificacionRoute.get('/verificacion/search/:valor', buscarVerificacion);
+verificacionRoute.get('/verificacion/', listarVerificaciones);

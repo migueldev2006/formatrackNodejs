@@ -2,46 +2,51 @@ import {pool} from "../database/db.js";
 
 export const registrarVerificacion = async(req, res) => {
     try {
-        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario} = req.body;
-        const sql = `INSERT INTO verificaciones (persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario) values ($1, $2, $3, $4, $5, $6, $7)`;
-        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario]);
+        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, observaciones, fk_inventario} = req.body;
+        const sql = `INSERT INTO verificaciones (persona_encargada, persona_asignada, hora_ingreso, hora_fin, observaciones, fk_inventario) values ($1, $2, $3, $4, $5, $6)`;
+        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, observaciones, fk_inventario]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Registro exitoso, Iniciando Verificacion"});
         } else {
             return res.status(400).json({message:"No fue posible iniciar la verificacion"});
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"})
+        console.log("Error al registrar e iniciar verificacion en el sistema "+error.message);
+        return res.status(500).json({message:"Error al registrar e iniciar verificacion en el sistema"})
     }
 }
 
 export const actualizarVerificacion = async(req, res) => {
     try {
         const {id_verificacion} = req.params;
-        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario} = req.body;
-        const sql = `UPDATE verificaciones SET persona_encargada = $1, persona_asignada = $2, hora_ingreso = $3, hora_fin = $4, fecha_verificacion = $5, fecha_actualizacion = $6, fk_inventario = $7 WHERE id_verificacion = $8 `;
-        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, fecha_verificacion, fecha_actualizacion, fk_inventario, id_verificacion]);
+        const {persona_encargada, persona_asignada, hora_ingreso, hora_fin, observaciones, fk_inventario} = req.body;
+        const sql = `UPDATE verificaciones SET persona_encargada = $1, persona_asignada = $2, hora_ingreso = $3, hora_fin = $4, observaciones = $5, fk_inventario = $6 WHERE id_verificacion = $7 `;
+        const result = await pool.query(sql, [persona_encargada, persona_asignada, hora_ingreso, hora_fin, observaciones, fk_inventario, id_verificacion]);
         if (result.rowCount>0) {
             return res.status(201).json({message:"Se ha actualizado correctamente"});
         } else {
             return res.status(400).json({message:"No fue posible actualizar la verificacion"});
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"})
+        console.log("Error al actualizar la verificacion en el sistema "+error.message);
+        return res.status(500).json({message:"Error al actualizar la verificacion en el sistema"})
     }
 }
-
+//pendiente
 export const buscarVerificacion = async(req, res) => {
     try {
-        const {fecha_verificacion} = req.params;
-        const sql = `SELECT * FROM verificaciones WHERE fecha_verificacion = $1`;
-        const result = await pool.query(sql, [fecha_verificacion]);
-        return res.status(201).json(result.rows)
+        const {valor} = req.params
+        const sql = `SELECT * FROM verificaciones WHERE persona_encargada ILIKE $1 OR persona_asignada::TEXT ILIKE $1 OR hora_ingreso::TEXT ILIKE $1 OR hora_fin::TEXT ILIKE $1 OR observaciones::TEXT ILIKE $1 OR fk_inventario::TEXT ILIKE $1 OR id_verificacion::TEXT ILIKE $1`;
+        const values = [`%${valor}%`];
+        const result = await pool.query(sql, values);
+        if (result.rowCount>0) {
+            return res.status(200).json(result.rows)
+        } else {
+            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
+        }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al consultar en el sistema"})
+        console.log("Error al buscar en el sistema "+error.message);
+        return res.status(500).json({message:"Error al buscar en el sistema"})
     }
 }
 
@@ -55,7 +60,7 @@ export const listarVerificaciones = async(req, res) => {
             return res.status(200).json(result.rows);
         }
     } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json({message:" Error al consultar en el sistema"});
+        console.log("Error al consultar las verificaciones realizadas en el sistema "+error.message);
+        return res.status(500).json({message:" Error al consultar las verificaciones realizadas en el sistema"});
     }
 }

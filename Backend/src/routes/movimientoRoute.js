@@ -3,9 +3,9 @@ import { aceptarMovimientos, actualizarMovimientos, buscarMovimientos, cancelarM
 
 export const movimientoRoute = Router();
 
-movimientoRoute.post('/api/movimiento/register/', registrarMovimientos);
-movimientoRoute.put('/api/movimiento/update/:id_movimiento', actualizarMovimientos);
-movimientoRoute.put('/api/movimiento/aceptar/:id_movimiento', aceptarMovimientos);
-movimientoRoute.put('/api/movimiento/cancelar/:id_movimiento', cancelarMovimientos);
-movimientoRoute.get('/api/movimiento/:estado', buscarMovimientos);
-movimientoRoute.get('/api/movimiento/', listarMovimientos);
+movimientoRoute.post('/movimiento/', registrarMovimientos);
+movimientoRoute.put('/movimiento/:id_movimiento', actualizarMovimientos);
+movimientoRoute.put('/movimiento/aceptar/:id_movimiento', aceptarMovimientos);
+movimientoRoute.put('/movimiento/cancelar/:id_movimiento', cancelarMovimientos);
+movimientoRoute.get('/movimiento/search/:valor', buscarMovimientos);
+movimientoRoute.get('/movimiento/', listarMovimientos);

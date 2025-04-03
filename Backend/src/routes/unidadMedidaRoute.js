@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { actualizarUnidadMedida, buscarUnidadMedida, desactivarUnidadMedida, listarUnidadMedida, resgistrarUnidadMedida } from "../controllers/unidadMedidaController.js";
+import { actualizarUnidadMedida, buscarUnidadMedida, cambiarEstadoUnidadMedida, listarUnidadMedida, resgistrarUnidadMedida } from "../controllers/unidadMedidaController.js";
 
 export const unidadMedidaRoute = Router();
 
-unidadMedidaRoute.post('/api/unidad/register/', resgistrarUnidadMedida);
-unidadMedidaRoute.put('/api/unidad/update/:id_unidad', actualizarUnidadMedida);
-unidadMedidaRoute.put('/api/unidad/desactivar/:id_unidad', desactivarUnidadMedida);
-unidadMedidaRoute.get('/api/unidad/:nombre', buscarUnidadMedida);
-unidadMedidaRoute.get('/api/unidad/', listarUnidadMedida);  
+unidadMedidaRoute.post('/unidad/register/', resgistrarUnidadMedida);
+unidadMedidaRoute.put('/unidad/update/:id_unidad', actualizarUnidadMedida);
+unidadMedidaRoute.put('/unidad/cambiarEstado/:id_unidad', cambiarEstadoUnidadMedida);
+unidadMedidaRoute.get('/unidad/search/:valor', buscarUnidadMedida);
+unidadMedidaRoute.get('/unidad/', listarUnidadMedida);  
