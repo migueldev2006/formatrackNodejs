@@ -61,23 +61,7 @@ export const cancelarMovimientos = async(req, res) => {
         return res.status(500).json({message:"Error al cancelar un movimiento en el sistema"});
     }
 }
-//pendiente
-export const buscarMovimientos = async(req, res) => {
-    try {
-        const {valor} = req.params
-        const sql = `SELECT * FROM movimientos WHERE descripcion ILIKE $1 OR cantidad::TEXT ILIKE $1 OR hora_ingreso::TEXT ILIKE $1 OR hora_salida::TEXT ILIKE $1 OR aceptado::TEXT ILIKE $1 OR en_proceso::TEXT ILIKE $1 OR cancelado::TEXT ILIKE $1 OR devolutivo::TEXT ILIKE $1 OR no_devolutivo::TEXT ILIKE $1 OR created_at::TEXT ILIKE $1 OR updated_at::TEXT ILIKE $1 OR fk_usuario::TEXT ILIKE $1 OR fk_tipo_movimiento::TEXT ILIKE $1 OR  fk_sitio::TEXT ILIKE $1 OR fk_inventario::TEXT ILIKE $1 OR id_movimiento::TEXT ILIKE $1`;
-        const values = [`%${valor}%`];
-        const result = await pool.query(sql, values);
-        if (result.rowCount>0) {
-            return res.status(200).json(result.rows)
-        } else {
-            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
-        }
-    } catch (error) {
-        console.log("Error al buscar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al buscar en el sistema"});
-    }
-}
+
 export const listarMovimientos = async(req, res) => {
     try {
         const sql = `SELECT * FROM movimientos`

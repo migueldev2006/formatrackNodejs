@@ -32,23 +32,6 @@ export const actualizarVerificacion = async(req, res) => {
         return res.status(500).json({message:"Error al actualizar la verificacion en el sistema"})
     }
 }
-//pendiente
-export const buscarVerificacion = async(req, res) => {
-    try {
-        const {valor} = req.params
-        const sql = `SELECT * FROM verificaciones WHERE persona_encargada ILIKE $1 OR persona_asignada::TEXT ILIKE $1 OR hora_ingreso::TEXT ILIKE $1 OR hora_fin::TEXT ILIKE $1 OR observaciones::TEXT ILIKE $1 OR fk_inventario::TEXT ILIKE $1 OR id_verificacion::TEXT ILIKE $1`;
-        const values = [`%${valor}%`];
-        const result = await pool.query(sql, values);
-        if (result.rowCount>0) {
-            return res.status(200).json(result.rows)
-        } else {
-            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
-        }
-    } catch (error) {
-        console.log("Error al buscar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al buscar en el sistema"})
-    }
-}
 
 export const listarVerificaciones = async(req, res) => {
     try {

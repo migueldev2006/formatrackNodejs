@@ -46,23 +46,7 @@ export const cambiarEstadoUnidadMedida = async(req, res) => {
         return res.status(500).json({message:"Error al cambiar el estado de la unidad en el sistema"})
     }
 }
-//pendiente
-export const buscarUnidadMedida = async(req, res) => {
-    try {
-        const {valor} = req.params
-        const sql = `SELECT * FROM unidades_medida WHERE nombre ILIKE $1 OR estado::TEXT ILIKE $1 OR created_at::TEXT ILIKE $1 OR updated_at::TEXT ILIKE $1 OR id_unidad::TEXT ILIKE $1`;
-        const values = [`%${valor}%`];
-        const result = await pool.query(sql, values);
-        if (result.rowCount>0) {
-            return res.status(200).json(result.rows)
-        } else {
-            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
-        }
-    } catch (error) {
-        console.log("Error al buscar en el sistema "+error.message);
-        return res.status(500).json({message:"Error al buscar en el sistema"})
-    }
-}
+
 export const listarUnidadMedida = async(req, res) => {
     try {
         const sql = `SELECT * FROM unidades_medida`;

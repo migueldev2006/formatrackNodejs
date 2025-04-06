@@ -63,23 +63,7 @@ export const rechazarSolicitudes = async(req, res) => {
         return res.status(500).json({message:"Error al rechazar una solicitud en el sistema"});
     }
 }
-//pendiente
-export const buscarSolicitudes = async(req, res) => {
-    try {
-        const {valor} = req.params
-        const sql = `SELECT * FROM solicitudes WHERE descripcion ILIKE $1 OR cantidad::TEXT ILIKE $1 OR aceptada::TEXT ILIKE $1 OR pendiente::TEXT ILIKE $1 OR rechazada::TEXT ILIKE $1 OR created_at::TEXT ILIKE $1 OR updated_at::TEXT ILIKE $1 OR fk_usuario::TEXT ILIKE $1 OR fk_inventario::TEXT ILIKE $1 OR  id_solicitud::TEXT ILIKE $1`;
-        const values = [`%${valor}%`];
-        const result = await pool.query(sql, values);
-        if (result.rowCount>0) {
-            return res.status(200).json(result.rows)
-        } else {
-            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
-        }
-    } catch (error) {
-        console.log("Error al buscar en el sistema");
-        return res.status(500).json({message:"Error al buscar en el sistema"});
-    }
-}
+
 export const listarSolicitudes = async(req, res) => {
     try {
         const sql = `SELECT * FROM solicitudes ORDER BY created_at DESC`;

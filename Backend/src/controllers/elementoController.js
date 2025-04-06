@@ -74,22 +74,6 @@ export const cambiarEstadoElemento = async(req, res) =>{
     }
 }
 
-export const buscarElementos = async(req, res) => {
-    try {
-        const {valor} = req.params
-        const sql = `SELECT * FROM elementos WHERE nombre ILIKE $1 OR descripcion::TEXT ILIKE $1 OR valor::TEXT ILIKE $1 OR perecedero::TEXT ILIKE $1 OR no_perecedero::TEXT ILIKE $1 OR estado::TEXT ILIKE $1 OR created_at::TEXT ILIKE $1 OR updated_at::TEXT ILIKE $1 OR fk_unidad_medida::TEXT ILIKE $1 OR fk_categoria::TEXT ILIKE $1 OR  fk_caracteristica::TEXT ILIKE $1 OR id_elemento::TEXT ILIKE $1`;
-        const values = [`%${valor}%`];
-        const result = await pool.query(sql, values);
-        if (result.rowCount>0) {
-            return res.status(200).json(result.rows)
-        } else {
-            return res.status(404).json({message:"No hay informacion con la busqueda que tratas de realizar"})
-        }
-    } catch (error) {
-        console.log("Error al consultar en el sistema "+error.message);
-        return res.status(500).json("Error al consultar en el sistema");
-    }
-}
 
 export const listarElementos = async(req, res) => {
     try {
