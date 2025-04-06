@@ -1,13 +1,10 @@
 import { Router } from "express";
-import { registrarSolicitudes, actualizarSolicitudes, buscarSolicitudes, listarSolicitudes, aceptarSolicitudes, rechazarSolicitudes ,actualizarStockSolicitud} from "../controllers/solicitudController.js";
-import verifyToken from "../middlewares/verifyToken.js";
+import { registrarSolicitudes, actualizarSolicitudes, listarSolicitudes, aceptarSolicitudes, rechazarSolicitudes } from "../controllers/solicitudController.js";
 
 export const solicitudRoute = Router();
 
-solicitudRoute.post('/api/solicitud/register/', verifyToken(), registrarSolicitudes);
-solicitudRoute.put('/api/solicitud/update/:id_solicitud', verifyToken(), actualizarSolicitudes);
-solicitudRoute.put('/api/solicitud/aceptar/:id_solicitud', verifyToken(), aceptarSolicitudes);
-solicitudRoute.put('/api/solicitud/rechazar/:id_solicitud', verifyToken(), rechazarSolicitudes)
-solicitudRoute.put('/api/solicitud/stock/:id_solicitud',verifyToken(),actualizarStockSolicitud)
-solicitudRoute.get('/api/solicitud/:estado', verifyToken(), buscarSolicitudes);
-solicitudRoute.get('/api/solicitud/',verifyToken(), listarSolicitudes);
+solicitudRoute.post('/solicitud/', registrarSolicitudes);
+solicitudRoute.put('/solicitud/:id_solicitud', actualizarSolicitudes);
+solicitudRoute.put('/solicitud/aceptar/:id_solicitud', aceptarSolicitudes);
+solicitudRoute.put('/solicitud/rechazar/:id_solicitud', rechazarSolicitudes)
+solicitudRoute.get('/solicitud/', listarSolicitudes);

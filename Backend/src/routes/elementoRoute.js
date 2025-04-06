@@ -1,11 +1,9 @@
 import {Router} from 'express';
-import { registrarElementos, actualizarElementos, buscarElementos, desactivarElementos, listarElementos } from '../controllers/elementoController.js';
-import verifyToken from "../middlewares/verifyToken.js";
+import { registrarElementos, actualizarElementos, cambiarEstadoElemento, listarElementos } from '../controllers/elementoController.js';
 
 export const elementoRoute = Router();
 
-elementoRoute.post('/api/elemento/register/',verifyToken(), registrarElementos);
-elementoRoute.put('/api/elemento/update/:id_elemento',verifyToken(), actualizarElementos);
-elementoRoute.put('/api/elemento/desactivar/:id_elemento',verifyToken(), desactivarElementos);
-elementoRoute.get('/api/elemento/:nombre',verifyToken(), buscarElementos);
-elementoRoute.get('/api/elemento/',verifyToken(), listarElementos);
+elementoRoute.post('/elemento/', registrarElementos);
+elementoRoute.put('/elemento/:id_elemento', actualizarElementos);
+elementoRoute.put('/elemento/cambiarEstado/:id_elemento', cambiarEstadoElemento);
+elementoRoute.get('/elemento/', listarElementos);

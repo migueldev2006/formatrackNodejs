@@ -1,11 +1,9 @@
 import { Router } from "express";
-import { actualizarTipoMovimiento, buscarTipoMovimiento, desactivarTipoMovimiento, listarTipoMovimiento, registrarTipoMovimiento } from "../controllers/tipoMovimientoController.js";
-import verifyToken from "../middlewares/verifyToken.js";
+import { actualizarTipoMovimiento, cambiarEstadoTipoMovimiento, listarTipoMovimiento, registrarTipoMovimiento } from "../controllers/tipoMovimientoController.js";
 
 export const tipoMovimientoRoute = Router();
 
-tipoMovimientoRoute.post('/api/tipoMovimiento/register/', verifyToken(), registrarTipoMovimiento);
-tipoMovimientoRoute.put('/api/tipoMovimiento/update/:id_tipo', verifyToken(), actualizarTipoMovimiento);
-tipoMovimientoRoute.put('/api/tipoMovimiento/desactivar/:id_tipo', verifyToken(), desactivarTipoMovimiento);
-tipoMovimientoRoute.get('/api/tipoMovimiento/:estado', verifyToken(), buscarTipoMovimiento);
-tipoMovimientoRoute.get('/api/tipoMovimiento/', verifyToken(), listarTipoMovimiento);
+tipoMovimientoRoute.post('/tipoMovimiento/', registrarTipoMovimiento);
+tipoMovimientoRoute.put('/tipoMovimiento/:id_tipo', actualizarTipoMovimiento);
+tipoMovimientoRoute.put('/tipoMovimiento/cambiarEstado/:id_tipo', cambiarEstadoTipoMovimiento);
+tipoMovimientoRoute.get('/tipoMovimiento/', listarTipoMovimiento);
