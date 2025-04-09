@@ -10,7 +10,6 @@
   "schemes": [
     "http"
   ],
-  "title" : "areas",
   "paths": {
     "/Areas": {
       "get": {
@@ -417,7 +416,7 @@
         }
       }
     },
-    "/api/elemento/register/": {
+    "/elemento/": {
       "post": {
         "description": "",
         "parameters": [
@@ -427,37 +426,31 @@
             "schema": {
               "type": "object",
               "properties": {
-                "codigo_sena": {
-                  "example": "any"
-                },
-                "codigo_unpsc": {
-                  "example": "any"
-                },
                 "nombre": {
                   "example": "any"
                 },
                 "descripcion": {
                   "example": "any"
                 },
-                "stock": {
+                "valor": {
+                  "example": "any"
+                },
+                "perecedero": {
+                  "example": "any"
+                },
+                "no_perecedero": {
                   "example": "any"
                 },
                 "estado": {
-                  "example": "any"
-                },
-                "actividad": {
-                  "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
                   "example": "any"
                 },
                 "fk_unidad_medida": {
                   "example": "any"
                 },
                 "fk_categoria": {
+                  "example": "any"
+                },
+                "fk_caracteristica": {
                   "example": "any"
                 }
               }
@@ -475,9 +468,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/elemento/update/{id_elemento}": {
+    "/elemento/{id_elemento}": {
       "put": {
         "description": "",
         "parameters": [
@@ -493,31 +497,22 @@
             "schema": {
               "type": "object",
               "properties": {
-                "codigo_sena": {
-                  "example": "any"
-                },
-                "codigo_unpsc": {
-                  "example": "any"
-                },
                 "nombre": {
                   "example": "any"
                 },
                 "descripcion": {
                   "example": "any"
                 },
-                "stock": {
+                "valor": {
+                  "example": "any"
+                },
+                "perecedero": {
+                  "example": "any"
+                },
+                "no_perecedero": {
                   "example": "any"
                 },
                 "estado": {
-                  "example": "any"
-                },
-                "actividad": {
-                  "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
                   "example": "any"
                 },
                 "fk_unidad_medida": {
@@ -525,14 +520,17 @@
                 },
                 "fk_categoria": {
                   "example": "any"
+                },
+                "fk_caracteristica": {
+                  "example": "any"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -543,7 +541,7 @@
         }
       }
     },
-    "/api/elemento/desactivar/{id_elemento}": {
+    "/elemento/cambiarEstado/{id_elemento}": {
       "put": {
         "description": "",
         "parameters": [
@@ -555,48 +553,11 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/elemento/{nombre}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "nombre",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/elemento/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -759,7 +720,7 @@
         }
       }
     },
-    "/api/inventario/register/": {
+    "/inventario/": {
       "post": {
         "description": "",
         "parameters": [
@@ -769,25 +730,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "valor": {
-                  "example": "any"
-                },
-                "costo": {
-                  "example": "any"
-                },
-                "descripcion": {
-                  "example": "any"
-                },
                 "stock": {
                   "example": "any"
                 },
                 "estado": {
-                  "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
                   "example": "any"
                 },
                 "fk_sitio": {
@@ -811,9 +757,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/inventario/update/{id_inventario}": {
+    "/inventario/{id_inventario}": {
       "put": {
         "description": "",
         "parameters": [
@@ -829,25 +786,10 @@
             "schema": {
               "type": "object",
               "properties": {
-                "valor": {
-                  "example": "any"
-                },
-                "costo": {
-                  "example": "any"
-                },
-                "descripcion": {
-                  "example": "any"
-                },
                 "stock": {
                   "example": "any"
                 },
                 "estado": {
-                  "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
                   "example": "any"
                 },
                 "fk_sitio": {
@@ -861,8 +803,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -873,7 +815,7 @@
         }
       }
     },
-    "/api/inventario/desactivar/{id_inventario}": {
+    "/inventario/cambiarEstado/{id_inventario}": {
       "put": {
         "description": "",
         "parameters": [
@@ -885,8 +827,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -897,44 +839,7 @@
         }
       }
     },
-    "/api/inventario/{estado}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "estado",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/inventario/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/movimiento/register/": {
+    "/movimiento/": {
       "post": {
         "description": "",
         "parameters": [
@@ -956,16 +861,19 @@
                 "hora_salida": {
                   "example": "any"
                 },
-                "estado": {
+                "aceptado": {
                   "example": "any"
                 },
-                "caracterizacion": {
+                "en_proceso": {
                   "example": "any"
                 },
-                "fecha_movimiento": {
+                "cancelado": {
                   "example": "any"
                 },
-                "fecha_actualizacion": {
+                "devolutivo": {
+                  "example": "any"
+                },
+                "no_devolutivo": {
                   "example": "any"
                 },
                 "fk_usuario": {
@@ -977,7 +885,7 @@
                 "fk_sitio": {
                   "example": "any"
                 },
-                "fk_elemento": {
+                "fk_inventario": {
                   "example": "any"
                 }
               }
@@ -995,9 +903,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/movimiento/update/{id_movimiento}": {
+    "/movimiento/{id_movimiento}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1025,16 +944,19 @@
                 "hora_salida": {
                   "example": "any"
                 },
-                "estado": {
+                "aceptado": {
                   "example": "any"
                 },
-                "caracterizacion": {
+                "en_proceso": {
                   "example": "any"
                 },
-                "fecha_movimiento": {
+                "cancelado": {
                   "example": "any"
                 },
-                "fecha_actualizacion": {
+                "devolutivo": {
+                  "example": "any"
+                },
+                "no_devolutivo": {
                   "example": "any"
                 },
                 "fk_usuario": {
@@ -1046,7 +968,7 @@
                 "fk_sitio": {
                   "example": "any"
                 },
-                "fk_elemento": {
+                "fk_inventario": {
                   "example": "any"
                 }
               }
@@ -1054,8 +976,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -1066,7 +988,7 @@
         }
       }
     },
-    "/api/movimiento/aceptar/{id_movimiento}": {
+    "/movimiento/aceptar/{id_movimiento}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1078,8 +1000,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -1090,7 +1012,7 @@
         }
       }
     },
-    "/api/movimiento/cancelar/{id_movimiento}": {
+    "/movimiento/cancelar/{id_movimiento}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1102,48 +1024,11 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/movimiento/{estado}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "estado",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/movimiento/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -1756,7 +1641,7 @@
         }
       }
     },
-    "/api/solicitud/register/": {
+    "/solicitud/": {
       "post": {
         "description": "",
         "parameters": [
@@ -1772,19 +1657,19 @@
                 "cantidad": {
                   "example": "any"
                 },
-                "estado": {
+                "aceptada": {
                   "example": "any"
                 },
-                "fecha_solicitud": {
+                "pendiente": {
                   "example": "any"
                 },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_elemento": {
+                "rechazada": {
                   "example": "any"
                 },
                 "fk_usuario": {
+                  "example": "any"
+                },
+                "fk_inventario": {
                   "example": "any"
                 }
               }
@@ -1802,9 +1687,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/solicitud/update/{id_solicitud}": {
+    "/solicitud/{id_solicitud}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1826,19 +1722,19 @@
                 "cantidad": {
                   "example": "any"
                 },
-                "estado": {
+                "aceptada": {
                   "example": "any"
                 },
-                "fecha_solicitud": {
+                "pendiente": {
                   "example": "any"
                 },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_elemento": {
+                "rechazada": {
                   "example": "any"
                 },
                 "fk_usuario": {
+                  "example": "any"
+                },
+                "fk_inventario": {
                   "example": "any"
                 }
               }
@@ -1846,8 +1742,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -1858,7 +1754,7 @@
         }
       }
     },
-    "/api/solicitud/aceptar/{id_solicitud}": {
+    "/solicitud/aceptar/{id_solicitud}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1870,8 +1766,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -1882,7 +1778,7 @@
         }
       }
     },
-    "/api/solicitud/rechazar/{id_solicitud}": {
+    "/solicitud/rechazar/{id_solicitud}": {
       "put": {
         "description": "",
         "parameters": [
@@ -1894,8 +1790,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -1906,44 +1802,7 @@
         }
       }
     },
-    "/api/solicitud/{estado}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "estado",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/solicitud/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/tipoMovimiento/register/": {
+    "/tipoMovimiento/": {
       "post": {
         "description": "",
         "parameters": [
@@ -1958,12 +1817,6 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
                 }
               }
             }
@@ -1980,9 +1833,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/tipoMovimiento/update/{id_tipo}": {
+    "/tipoMovimiento/{id_tipo}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2003,20 +1867,14 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -2027,7 +1885,7 @@
         }
       }
     },
-    "/api/tipoMovimiento/desactivar/{id_tipo}": {
+    "/tipoMovimiento/cambiarEstado/{id_tipo}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2039,48 +1897,11 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/tipoMovimiento/{estado}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "estado",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/tipoMovimiento/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"
@@ -2222,7 +2043,7 @@
         }
       }
     },
-    "/api/unidad/register/": {
+    "/unidad/register/": {
       "post": {
         "description": "",
         "parameters": [
@@ -2237,12 +2058,6 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
                 }
               }
             }
@@ -2261,7 +2076,7 @@
         }
       }
     },
-    "/api/unidad/update/{id_unidad}": {
+    "/unidad/update/{id_unidad}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2282,20 +2097,14 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -2306,7 +2115,7 @@
         }
       }
     },
-    "/api/unidad/desactivar/{id_unidad}": {
+    "/unidad/cambiarEstado/{id_unidad}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2330,31 +2139,7 @@
         }
       }
     },
-    "/api/unidad/{nombre}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "nombre",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/unidad/": {
+    "/unidad/": {
       "get": {
         "description": "",
         "responses": {
@@ -2618,7 +2403,7 @@
         }
       }
     },
-    "/api/verificacion/register/": {
+    "/verificacion/register/": {
       "post": {
         "description": "",
         "parameters": [
@@ -2640,10 +2425,7 @@
                 "hora_fin": {
                   "example": "any"
                 },
-                "fecha_verificacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
+                "observaciones": {
                   "example": "any"
                 },
                 "fk_inventario": {
@@ -2666,7 +2448,7 @@
         }
       }
     },
-    "/api/verificacion/update/{id_verificacion}": {
+    "/verificacion/update/{id_verificacion}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2694,10 +2476,7 @@
                 "hora_fin": {
                   "example": "any"
                 },
-                "fecha_verificacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
+                "observaciones": {
                   "example": "any"
                 },
                 "fk_inventario": {
@@ -2720,31 +2499,7 @@
         }
       }
     },
-    "/api/verificacion/{fecha_verificacion}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "fecha_verificacion",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/verificacion/": {
+    "/verificacion/": {
       "get": {
         "description": "",
         "responses": {
@@ -2757,104 +2512,7 @@
         }
       }
     },
-    "/api/usuario_ficha/register/": {
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_usuario": {
-                  "example": "any"
-                },
-                "fk_ficha": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/usuario_ficha/update/{id_usuario_ficha}": {
-      "put": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id_usuario_ficha",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_usuario": {
-                  "example": "any"
-                },
-                "fk_ficha": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/usuario_ficha/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/rol/register/": {
+    "/rol/": {
       "post": {
         "description": "",
         "parameters": [
@@ -2869,15 +2527,6 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_usuario": {
-                  "example": "any"
                 }
               }
             }
@@ -2894,9 +2543,20 @@
             "description": "Internal Server Error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
-    "/api/rol/update/{id_rol}": {
+    "/rol/{id_rol}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2917,23 +2577,14 @@
                 },
                 "estado": {
                   "example": "any"
-                },
-                "fecha_creacion": {
-                  "example": "any"
-                },
-                "fecha_actualizacion": {
-                  "example": "any"
-                },
-                "fk_usuario": {
-                  "example": "any"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -2944,7 +2595,7 @@
         }
       }
     },
-    "/api/rol/desactivar/{id_rol}": {
+    "/rol/cambiarEstado/{id_rol}": {
       "put": {
         "description": "",
         "parameters": [
@@ -2956,48 +2607,11 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/rol/{nombre}": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "nombre",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/api/rol/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"

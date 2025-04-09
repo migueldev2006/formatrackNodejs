@@ -17,11 +17,11 @@ import tipoSitioRoute from "./src/routes/tipoSitios.router.js";
 import { unidadMedidaRoute } from "./src/routes/unidadMedidaRoute.js";
 import usuarioRoute from "./src/routes/usuarios.router.js";
 import { verificacionRoute } from "./src/routes/verificacionRoute.js";
-import { usuarioFichaRoute } from "./src/routes/usuarioFichaRoute.js";
 import { rolRoute } from "./src/routes/rolRoute.js";
 import swaggerUI from 'swagger-ui-express';
 import fs from 'fs';
 import path from 'path';
+import cors from 'cors'
 
 const app = express()
 
@@ -32,6 +32,7 @@ console.log(swaggerData)
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(cors());
 
 app.use("/doc", swaggerUI.serve, swaggerUI.setup(swaggerData));
 
@@ -52,7 +53,6 @@ app.use(tipoSitioRoute)
 app.use(unidadMedidaRoute)
 app.use(usuarioRoute)
 app.use(verificacionRoute)
-app.use(usuarioFichaRoute)
 app.use(rolRoute)
 
 app.listen(3000, () => {
